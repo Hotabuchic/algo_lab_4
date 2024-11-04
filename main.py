@@ -26,7 +26,7 @@ class MainWinodow(QMainWindow):
         self.min_gen = None
         self.max_gen = None
         self.setWindowTitle("Генетический алгоритм")
-        self.resize(900, 700)
+        self.resize(800, 700)
 
         self.param = QLabel("Параметры", self)
         self.param.move(100, 10)
@@ -67,7 +67,7 @@ class MainWinodow(QMainWindow):
         self.mutation_line.move(220, 75)
 
         self.count_hrom_line = QLineEdit(self)
-        self.count_hrom_line.setText("100")
+        self.count_hrom_line.setText("50")
         self.count_hrom_line.move(220, 110)
 
         self.min_gen_line = QLineEdit(self)
@@ -96,7 +96,7 @@ class MainWinodow(QMainWindow):
         self.count_poc.adjustSize()
 
         self.count_poc_line = QLineEdit(self)
-        self.count_poc_line.setText("1000")
+        self.count_poc_line.setText("100")
         self.count_poc_line.move(220, 325)
 
         self.make_do = QPushButton("Рассчитать", self)
@@ -129,7 +129,8 @@ class MainWinodow(QMainWindow):
 
         self.table = QTableWidget(self)
         self.table.move(350, 20)
-        self.table.resize(530, 660)
+        self.table.resize(430, 660)
+        self.table.itemChanged.connect(self.item_change)
 
     def item_change(self, item):
         pass
@@ -167,7 +168,6 @@ class MainWinodow(QMainWindow):
         for i in range(self.count_gens):
             self.gens[i].append(func(*self.gens[i]))
         self.reload_table()
-        self.table.itemChanged.connect(self.item_change)
 
     def calculate_algo(self):
         if self.count_gens % 2 == 1:
@@ -179,7 +179,7 @@ class MainWinodow(QMainWindow):
             for j in range(0, self.count_gens, 2):
                 father1, father2 = self.gens[j], self.gens[j + 1]
                 self.krossingover(self.modify_checkbox.isChecked(), chance, father1, father2, j)
-        self.gens = sorted(self.gens, key=lambda x: x[-1])[:self.count_gens]
+            self.gens = sorted(self.gens, key=lambda x: x[-1])[:self.count_gens]
         self.reload_table()
         text_for_output = ""
         for i in range(N):
